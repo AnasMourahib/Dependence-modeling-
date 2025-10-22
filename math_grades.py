@@ -1,7 +1,7 @@
 import pandas 
 import numpy as np 
 #df is a pandas data frame
-df = pandas.read_csv('C:/Users/20254817/Desktop/Githib/Dependence-modeling-/data/mathmarks.csv') #Adapt the file path 
+df = pandas.read_csv('/data/mathmarks.csv') #Adapt the file path 
 #inspect the shape of df
 df.shape
 
