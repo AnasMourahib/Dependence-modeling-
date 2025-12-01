@@ -137,7 +137,7 @@ Theta_MLE
 
 - We simulated a Gaussian vector respecting a graph structure  
 - We estimated covariance and precision matrices  
-- We computed the **MLE precision matrix** and compare it with the inverse of teh sample coavriance matrix 
+- We computed the **MLE precision matrix** and compare it with the inverse of the sample coavriance matrix 
 - The MLE recovers the original sparsity pattern of the graph
 
 This provides a full demonstration of how Gaussian graphical models behave in practice.
