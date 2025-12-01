@@ -1,0 +1,351 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Gaussian Graphical Model on a 4-Cycle},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Gaussian Graphical Model on a 4-Cycle}
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}\label{introduction}
+
+In this notebook we study a 4-dimensional Gaussian graphical model whose
+precision matrix corresponds to the \textbf{cycle graph}:
+
+\[
+1 \;-\; 2 \;-\; 3 \;-\; 4 \;-\; 1.
+\]
+
+Zeros in the \textbf{precision matrix} encode conditional
+independences.\\
+We will:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Define the precision matrix \(\Theta\)
+\item
+  Compute the covariance matrix \(\Sigma = \Theta^{-1}\)
+\item
+  Simulate a sample \(X_1,\dots,X_N \sim \mathcal{N}(0, \Sigma)\)
+\item
+  Standardize the margins to variance 1
+\item
+  Estimate covariance and precision matrices from data
+\item
+  Compute the maximum-likelihood estimate (MLE) of the precision matrix
+\end{enumerate}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{1. Precision Matrix and
+Covariance}\label{precision-matrix-and-covariance}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(MASS)}
+
+\CommentTok{\# 4{-}cycle precision matrix}
+\NormalTok{Theta }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\FunctionTok{c}\NormalTok{(}
+  \DecValTok{10}\NormalTok{,  }\DecValTok{5}\NormalTok{,  }\DecValTok{0}\NormalTok{,  }\DecValTok{3}\NormalTok{,}
+   \DecValTok{5}\NormalTok{, }\DecValTok{10}\NormalTok{,  }\DecValTok{5}\NormalTok{,  }\DecValTok{0}\NormalTok{,}
+   \DecValTok{0}\NormalTok{,  }\DecValTok{5}\NormalTok{, }\DecValTok{10}\NormalTok{,  }\DecValTok{5}\NormalTok{,}
+   \DecValTok{3}\NormalTok{,  }\DecValTok{0}\NormalTok{,  }\DecValTok{5}\NormalTok{, }\DecValTok{10}
+\NormalTok{), }\AttributeTok{nrow =} \DecValTok{4}\NormalTok{, }\AttributeTok{byrow =} \ConstantTok{TRUE}\NormalTok{)}
+
+\CommentTok{\# Covariance matrix = inverse of precision}
+\NormalTok{Sigma }\OtherTok{\textless{}{-}} \FunctionTok{solve}\NormalTok{(Theta)}
+\NormalTok{Sigma}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##            [,1]       [,2]       [,3]       [,4]
+## [1,]  0.2941176 -0.2647059  0.2352941 -0.2058824
+## [2,] -0.2647059  0.3882353 -0.3117647  0.2352941
+## [3,]  0.2352941 -0.3117647  0.3882353 -0.2647059
+## [4,] -0.2058824  0.2352941 -0.2647059  0.2941176
+\end{verbatim}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{2. Simulate a Gaussian
+Sample}\label{simulate-a-gaussian-sample}
+
+We simulate a large sample from the multivariate normal distribution.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{N }\OtherTok{\textless{}{-}} \DecValTok{10}\SpecialCharTok{\^{}}\DecValTok{6}
+\NormalTok{d }\OtherTok{\textless{}{-}} \DecValTok{4}
+\NormalTok{mean\_vec }\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, d)}
+
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{1}\NormalTok{)}
+\NormalTok{X }\OtherTok{\textless{}{-}} \FunctionTok{mvrnorm}\NormalTok{(N, }\AttributeTok{mu =}\NormalTok{ mean\_vec, }\AttributeTok{Sigma =}\NormalTok{ Sigma)}
+\FunctionTok{head}\NormalTok{(X)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##            [,1]       [,2]       [,3]        [,4]
+## [1,] -0.1975883  0.3546697 -0.4388273  0.30669383
+## [2,] -0.3272609 -0.2511858  0.1731049 -0.24127898
+## [3,] -0.8029907  0.4330742 -0.2953947  0.27218247
+## [4,]  0.8509199 -1.0841720  0.5413509 -0.91523799
+## [5,] -0.1194133 -0.4187337  0.2370841 -0.09380139
+## [6,] -0.3322681  0.6356070 -0.1526470  0.63435188
+\end{verbatim}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{3. Standardize Margins to Variance
+1}\label{standardize-margins-to-variance-1}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{std }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(}\FunctionTok{diag}\NormalTok{(Sigma))}
+\NormalTok{X\_std }\OtherTok{\textless{}{-}} \FunctionTok{sweep}\NormalTok{(X, }\DecValTok{2}\NormalTok{, std, }\AttributeTok{FUN =} \StringTok{"/"}\NormalTok{)}
+
+\CommentTok{\# Verify variances are \textasciitilde{}1}
+\FunctionTok{apply}\NormalTok{(X\_std, }\DecValTok{2}\NormalTok{, var)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1.001016 1.000923 1.000173 1.000096
+\end{verbatim}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{4. Estimate Covariance and Precision From the
+Data}\label{estimate-covariance-and-precision-from-the-data}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{EstimSigma }\OtherTok{\textless{}{-}} \FunctionTok{cov}\NormalTok{(X\_std)}
+\NormalTok{EstimTheta }\OtherTok{\textless{}{-}} \FunctionTok{solve}\NormalTok{(EstimSigma)}
+
+\NormalTok{EstimSigma}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##            [,1]       [,2]       [,3]       [,4]
+## [1,]  1.0010157 -0.7840069  0.6964156 -0.7001206
+## [2,] -0.7840069  1.0009229 -0.8033150  0.6965282
+## [3,]  0.6964156 -0.8033150  1.0001734 -0.7832021
+## [4,] -0.7001206  0.6965282 -0.7832021  1.0000957
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{EstimTheta}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              [,1]         [,2]         [,3]         [,4]
+## [1,] 2.9362015211  1.687379837 0.0003530772  0.880579931
+## [2,] 1.6873798374  3.877125294 1.9381863262 -0.001165772
+## [3,] 0.0003530772  1.938186326 3.8769299209  1.686504288
+## [4,] 0.8805799315 -0.001165772 1.6865042880  2.937916860
+\end{verbatim}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{5. Maximum-Likelihood Estimation of
+Θ}\label{maximum-likelihood-estimation-of-ux3b8}
+
+We parameterize Θ using only the \textbf{upper triangular entries}.
+
+\subsubsection{Helper Functions}\label{helper-functions}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Construct symmetric matrix from upper{-}triangular vector}
+\NormalTok{construct\_symmetric\_matrix }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(theta\_vec, d) \{}
+\NormalTok{  Theta\_mat }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\DecValTok{0}\NormalTok{, d, d)}
+\NormalTok{  idx }\OtherTok{\textless{}{-}} \FunctionTok{which}\NormalTok{(}\FunctionTok{upper.tri}\NormalTok{(Theta\_mat, }\AttributeTok{diag =} \ConstantTok{TRUE}\NormalTok{))}
+\NormalTok{  Theta\_mat[idx] }\OtherTok{\textless{}{-}}\NormalTok{ theta\_vec}
+\NormalTok{  Theta\_mat }\OtherTok{\textless{}{-}}\NormalTok{ Theta\_mat }\SpecialCharTok{+} \FunctionTok{t}\NormalTok{(Theta\_mat) }\SpecialCharTok{{-}} \FunctionTok{diag}\NormalTok{(}\FunctionTok{diag}\NormalTok{(Theta\_mat))}
+  \FunctionTok{return}\NormalTok{(Theta\_mat)}
+\NormalTok{\}}
+
+\CommentTok{\# Gaussian log{-}likelihood}
+\NormalTok{log\_likelihood }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(theta\_vec, S, d) \{}
+\NormalTok{  Theta\_mat }\OtherTok{\textless{}{-}} \FunctionTok{construct\_symmetric\_matrix}\NormalTok{(theta\_vec, d)}
+\NormalTok{  det\_val }\OtherTok{\textless{}{-}} \FunctionTok{det}\NormalTok{(Theta\_mat)}
+  \ControlFlowTok{if}\NormalTok{ (det\_val }\SpecialCharTok{\textless{}=} \DecValTok{0}\NormalTok{) }\FunctionTok{return}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{10}\SpecialCharTok{\^{}}\NormalTok{(}\DecValTok{16}\NormalTok{))}
+  \FunctionTok{return}\NormalTok{( }\FunctionTok{log}\NormalTok{(det\_val) }\SpecialCharTok{{-}} \FunctionTok{sum}\NormalTok{(}\FunctionTok{diag}\NormalTok{  (S }\SpecialCharTok{\%*\%}\NormalTok{ Theta\_mat )) )}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Initial Positive-Definite
+Guess}\label{initial-positive-definite-guess}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{7}\NormalTok{)}
+\NormalTok{A }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\FunctionTok{rnorm}\NormalTok{(d}\SpecialCharTok{*}\NormalTok{d), d, d)}
+\NormalTok{Theta0 }\OtherTok{\textless{}{-}}\NormalTok{ A }\SpecialCharTok{\%*\%} \FunctionTok{t}\NormalTok{(A) }\SpecialCharTok{+}\NormalTok{ d }\SpecialCharTok{*} \FunctionTok{diag}\NormalTok{(d)}
+
+\NormalTok{upper\_idx }\OtherTok{\textless{}{-}} \FunctionTok{which}\NormalTok{(}\FunctionTok{upper.tri}\NormalTok{(Theta0, }\AttributeTok{diag =} \ConstantTok{TRUE}\NormalTok{))}
+\NormalTok{theta0\_vec }\OtherTok{\textless{}{-}}\NormalTok{ Theta0[upper\_idx]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Optimization}\label{optimization}
+
+We minimize the negative log-likelihood.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{optim\_result }\OtherTok{\textless{}{-}} \FunctionTok{optim}\NormalTok{(}
+  \AttributeTok{par =}\NormalTok{ theta0\_vec,}
+  \AttributeTok{fn =} \ControlFlowTok{function}\NormalTok{(par) }\SpecialCharTok{{-}}\FunctionTok{log\_likelihood}\NormalTok{(par, EstimSigma, d),}
+  \AttributeTok{method =} \StringTok{"BFGS"}
+\NormalTok{)}
+
+\NormalTok{Theta\_MLE }\OtherTok{\textless{}{-}} \FunctionTok{construct\_symmetric\_matrix}\NormalTok{(optim\_result}\SpecialCharTok{$}\NormalTok{par, d)}
+\NormalTok{Theta\_MLE}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##             [,1]        [,2]        [,3]        [,4]
+## [1,] 2.936023166  1.68740575 0.000367674  0.88040058
+## [2,] 1.687405750  3.87727182 1.938094027 -0.00137707
+## [3,] 0.000367674  1.93809403 3.877040559  1.68671152
+## [4,] 0.880400577 -0.00137707 1.686711521  2.93818775
+\end{verbatim}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Conclusion}\label{conclusion}
+
+\begin{itemize}
+\tightlist
+\item
+  We simulated a Gaussian vector respecting a graph structure\\
+\item
+  We estimated covariance and precision matrices\\
+\item
+  We computed the \textbf{MLE precision matrix}\\
+\item
+  The MLE recovers the original sparsity pattern of the graph
+\end{itemize}
+
+This provides a full demonstration of how Gaussian graphical models
+behave in practice.
+
+\end{document}

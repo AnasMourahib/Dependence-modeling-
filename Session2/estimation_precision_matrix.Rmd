@@ -1,8 +1,8 @@
 ---
 title: "Gaussian Graphical Model on a 4-Cycle"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 # Introduction
@@ -20,10 +20,9 @@ We will:
 1. Define the precision matrix \( \Theta \)
 2. Compute the covariance matrix \( \Sigma = \Theta^{-1} \)
 3. Simulate a sample \(X_1,\dots,X_N \sim \mathcal{N}(0, \Sigma)\)
-4. Standardize the margins to variance 1
 5. Estimate covariance and precision matrices from data
 6. Compute the maximum-likelihood estimate (MLE) of the precision matrix
-
+7. Compare the MLE estimator and the inverse of the sample coavriance matrix
 ---
 
 # 1. Precision Matrix and Covariance
@@ -60,24 +59,14 @@ X <- mvrnorm(N, mu = mean_vec, Sigma = Sigma)
 head(X)
 ```
 
----
 
-# 3. Standardize Margins to Variance 1
-
-```{r}
-std <- sqrt(diag(Sigma))
-X_std <- sweep(X, 2, std, FUN = "/")
-
-# Verify variances are ~1
-apply(X_std, 2, var)
-```
 
 ---
 
-# 4. Estimate Covariance and Precision From the Data
+# 3. Estimate Covariance and Precision From the Data
 
 ```{r}
-EstimSigma <- cov(X_std)
+EstimSigma <- cov(X)
 EstimTheta <- solve(EstimSigma)
 
 EstimSigma
@@ -86,7 +75,7 @@ EstimTheta
 
 ---
 
-# 5. Maximum-Likelihood Estimation of Θ
+# 4. Maximum-Likelihood Estimation of Θ
 
 We parameterize Θ using only the **upper triangular entries**.
 
@@ -148,7 +137,7 @@ Theta_MLE
 
 - We simulated a Gaussian vector respecting a graph structure  
 - We estimated covariance and precision matrices  
-- We computed the **MLE precision matrix**  
+- We computed the **MLE precision matrix** and compare it with the inverse of teh sample coavriance matrix 
 - The MLE recovers the original sparsity pattern of the graph
 
 This provides a full demonstration of how Gaussian graphical models behave in practice.
