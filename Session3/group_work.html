@@ -467,15 +467,15 @@ construct_symmetric_matrix &lt;- function(theta_vec, d) {
 log_likelihood &lt;- function(theta_vec, S, d) {
   Theta_mat &lt;- construct_symmetric_matrix(theta_vec, d)
   det_val &lt;- det(Theta_mat)
-  if (det_val &lt;= 0) return(-Inf)
-  return(log(det_val) - sum(S * Theta_mat))
+  if (det_val &lt;= 0) return(-10^(16))
+  return( log(det_val) - sum(diag  (S %*% Theta_mat )) )
 }</code></pre>
 <hr />
 </div>
 </div>
 <div id="initial-positive-definite-guess" class="section level1">
 <h1>Initial Positive-Definite Guess</h1>
-<pre class="r"><code>set.seed(123)
+<pre class="r"><code>set.seed(7)
 A &lt;- matrix(rnorm(d*d), d, d)
 Theta0 &lt;- A %*% t(A) + d * diag(d)
 
@@ -489,16 +489,16 @@ theta0_vec &lt;- Theta0[upper_idx]</code></pre>
 <pre class="r"><code>optim_result &lt;- optim(
   par = theta0_vec,
   fn = function(par) -log_likelihood(par, EstimSigma, d),
-  control = list(maxit = 1000)
+  method = &quot;BFGS&quot;
 )
 
 Theta_MLE &lt;- construct_symmetric_matrix(optim_result$par, d)
 Theta_MLE</code></pre>
-<pre><code>##            [,1]       [,2]       [,3]       [,4]
-## [1,]  2.6007230  1.0625314 -0.3929277  0.6232513
-## [2,]  1.0625314  3.9624157  2.0647416 -0.4832328
-## [3,] -0.3929277  2.0647416  4.0620401  1.5156227
-## [4,]  0.6232513 -0.4832328  1.5156227  2.9191769</code></pre>
+<pre><code>##             [,1]        [,2]        [,3]        [,4]
+## [1,] 2.936023166  1.68740575 0.000367674  0.88040058
+## [2,] 1.687405750  3.87727182 1.938094027 -0.00137707
+## [3,] 0.000367674  1.93809403 3.877040559  1.68671152
+## [4,] 0.880400577 -0.00137707 1.686711521  2.93818775</code></pre>
 <hr />
 </div>
 <div id="conclusion" class="section level1">

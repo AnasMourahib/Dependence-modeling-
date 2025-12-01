@@ -1,6 +1,8 @@
 ---
 title: "Gaussian Graphical Model on a 4-Cycle"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 # Introduction
@@ -104,9 +106,10 @@ construct_symmetric_matrix <- function(theta_vec, d) {
 log_likelihood <- function(theta_vec, S, d) {
   Theta_mat <- construct_symmetric_matrix(theta_vec, d)
   det_val <- det(Theta_mat)
-  if (det_val <= 0) return(-Inf)
-  return(log(det_val) - sum(S * Theta_mat))
+  if (det_val <= 0) return(-10^(16))
+  return( log(det_val) - sum(diag  (S %*% Theta_mat )) )
 }
+
 ```
 
 ---
@@ -114,7 +117,7 @@ log_likelihood <- function(theta_vec, S, d) {
 # Initial Positive-Definite Guess
 
 ```{r}
-set.seed(123)
+set.seed(7)
 A <- matrix(rnorm(d*d), d, d)
 Theta0 <- A %*% t(A) + d * diag(d)
 
@@ -132,7 +135,7 @@ We minimize the negative log-likelihood.
 optim_result <- optim(
   par = theta0_vec,
   fn = function(par) -log_likelihood(par, EstimSigma, d),
-  control = list(maxit = 1000)
+  method = "BFGS"
 )
 
 Theta_MLE <- construct_symmetric_matrix(optim_result$par, d)
