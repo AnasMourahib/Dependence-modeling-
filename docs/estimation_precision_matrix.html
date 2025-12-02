@@ -370,9 +370,11 @@ We will:</p>
 \Theta^{-1}\)</span></li>
 <li>Simulate a sample <span class="math inline">\(X_1,\dots,X_N \sim
 \mathcal{N}(0, \Sigma)\)</span></li>
-<li>Standardize the margins to variance 1</li>
-<li>Estimate covariance and precision matrices from data</li>
+<li>Compute sample covariance matrix and its inverse (this will be an
+estimate of the precision matrix)</li>
 <li>Compute the maximum-likelihood estimate (MLE) of the precision
+matrix</li>
+<li>Compare the MLE estimator and the inverse of the sample covariance
 matrix</li>
 </ol>
 <hr />
@@ -419,37 +421,27 @@ head(X)</code></pre>
 ## [6,] -0.3322681  0.6356070 -0.1526470  0.63435188</code></pre>
 <hr />
 </div>
-<div id="standardize-margins-to-variance-1" class="section level1">
-<h1>3. Standardize Margins to Variance 1</h1>
-<pre class="r"><code>std &lt;- sqrt(diag(Sigma))
-X_std &lt;- sweep(X, 2, std, FUN = &quot;/&quot;)
-
-# Verify variances are ~1
-apply(X_std, 2, var)</code></pre>
-<pre><code>## [1] 1.001016 1.000923 1.000173 1.000096</code></pre>
-<hr />
-</div>
 <div id="estimate-covariance-and-precision-from-the-data" class="section level1">
-<h1>4. Estimate Covariance and Precision From the Data</h1>
-<pre class="r"><code>EstimSigma &lt;- cov(X_std)
+<h1>3. Estimate Covariance and Precision From the Data</h1>
+<pre class="r"><code>EstimSigma &lt;- cov(X)
 EstimTheta &lt;- solve(EstimSigma)
 
 EstimSigma</code></pre>
 <pre><code>##            [,1]       [,2]       [,3]       [,4]
-## [1,]  1.0010157 -0.7840069  0.6964156 -0.7001206
-## [2,] -0.7840069  1.0009229 -0.8033150  0.6965282
-## [3,]  0.6964156 -0.8033150  1.0001734 -0.7832021
-## [4,] -0.7001206  0.6965282 -0.7832021  1.0000957</code></pre>
+## [1,]  0.2944164 -0.2649280  0.2353296 -0.2059178
+## [2,] -0.2649280  0.3885936 -0.3118752  0.2353676
+## [3,]  0.2353296 -0.3118752  0.3883026 -0.2646561
+## [4,] -0.2059178  0.2353676 -0.2646561  0.2941458</code></pre>
 <pre class="r"><code>EstimTheta</code></pre>
-<pre><code>##              [,1]         [,2]         [,3]         [,4]
-## [1,] 2.9362015211  1.687379837 0.0003530772  0.880579931
-## [2,] 1.6873798374  3.877125294 1.9381863262 -0.001165772
-## [3,] 0.0003530772  1.938186326 3.8769299209  1.686504288
-## [4,] 0.8805799315 -0.001165772 1.6865042880  2.937916860</code></pre>
+<pre><code>##             [,1]         [,2]        [,3]         [,4]
+## [1,] 9.983085172  4.993497156 0.001044869  2.993971767
+## [2,] 4.993497156  9.986534849 4.992298113 -0.003449892
+## [3,] 0.001044869  4.992298113 9.986031614  4.990906125
+## [4,] 2.993971767 -0.003449892 4.990906125  9.988917325</code></pre>
 <hr />
 </div>
 <div id="maximum-likelihood-estimation-of-θ" class="section level1">
-<h1>5. Maximum-Likelihood Estimation of Θ</h1>
+<h1>4. Maximum-Likelihood Estimation of Θ</h1>
 <p>We parameterize Θ using only the <strong>upper triangular
 entries</strong>.</p>
 <div id="helper-functions" class="section level3">
@@ -495,10 +487,10 @@ theta0_vec &lt;- Theta0[upper_idx]</code></pre>
 Theta_MLE &lt;- construct_symmetric_matrix(optim_result$par, d)
 Theta_MLE</code></pre>
 <pre><code>##             [,1]        [,2]        [,3]        [,4]
-## [1,] 2.936023166  1.68740575 0.000367674  0.88040058
-## [2,] 1.687405750  3.87727182 1.938094027 -0.00137707
-## [3,] 0.000367674  1.93809403 3.877040559  1.68671152
-## [4,] 0.880400577 -0.00137707 1.686711521  2.93818775</code></pre>
+## [1,] 9.983300392 4.997088835 0.005896888 2.996026931
+## [2,] 4.997088835 9.990335612 4.997893527 0.001914058
+## [3,] 0.005896888 4.997893527 9.992069847 4.996303601
+## [4,] 2.996026931 0.001914058 4.996303601 9.991617875</code></pre>
 <hr />
 </div>
 <div id="conclusion" class="section level1">
@@ -508,8 +500,8 @@ Theta_MLE</code></pre>
 </li>
 <li>We estimated covariance and precision matrices<br />
 </li>
-<li>We computed the <strong>MLE precision matrix</strong><br />
-</li>
+<li>We computed the <strong>MLE precision matrix</strong> and compare it
+with the inverse of the sample coavriance matrix</li>
 <li>The MLE recovers the original sparsity pattern of the graph</li>
 </ul>
 <p>This provides a full demonstration of how Gaussian graphical models
