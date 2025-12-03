@@ -26,10 +26,9 @@ The knitted HTML report for the **Graphical Lasso implemented in R** is availabl
 
 The Jupyter Notebook for the **Session 3 group work (Python version)** can be viewed online here:
 
-👉 **[Open the notebook](https://anasmourahib.github.io/Dependence-modeling-/group_work.ipynb)**
+👉 **[Open the notebook](https://github.com/AnasMourahib/Dependence-modeling-/blob/main/Session3/group_work.ipynb)**
 
-> **Note:** Opening the raw `docs/group_work.ipynb` file on GitHub will only display JSON code.  
-> Use the link above to view the nicely rendered notebook.
+
 
 ---
 
@@ -39,6 +38,4 @@ The Jupyter Notebook for the **Graphical Lasso implemented in Python** is availa
 
 👉 **[Open the notebook](https://anasmourahib.github.io/Dependence-modeling-/graphical_lasso.ipynb)**
 
-> **Note:** The raw `docs/graphical_lasso.ipynb` file on GitHub will not display properly.  
-> Use the link above to see the full rendered notebook.
 
