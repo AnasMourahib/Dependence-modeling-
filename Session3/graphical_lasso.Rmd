@@ -1,0 +1,95 @@
+---
+title: "Graphical Lasso in R"
+author: "Anas Mourahib"
+output: html_document
+---
+
+# Graphical Lasso (R version)
+
+This RMarkdown generates a Gaussian sample from a precision matrix representing a $4$-dimensional graph with $2$ cliques $\{1,2,3\}$ and $\{2 , 3 , 4\}$, estimates the covariance, and then the precision amtrix first using glasso package and then by minimizing a custom implementation of the minimization function 
+
+```{r}
+# Load libraries
+library(MASS)       # for mvrnorm
+library(glasso)     # for graphical lasso
+```
+# 1. Define precision matrix Theta and compute Sigma
+```{r}
+Theta <- matrix(c(
+  10, 5, 3, 0,
+   5,10, 5, 3,
+   3, 5,10, 5,
+   0, 3, 5,10
+), nrow=4, byrow=TRUE)
+
+Sigma <- solve(Theta)
+Sigma
+```
+
+# 2. Simulate Gaussian sample
+```{r}
+set.seed(7)
+N <- 10^4
+d <- 4
+mean_vec <- rep(0, d)
+X <- mvrnorm(N, mu = mean_vec, Sigma = Sigma)
+head(X)
+
+# Sample covariance
+EstimSigma <- cov(X)
+EstimSigma
+```
+
+# 3. Graphical Lasso using glasso package
+```{r}
+alpha <- 8e-4   # penalty parameter
+
+fit <- glasso(EstimSigma, rho = alpha)
+
+cat("Estimated Precision Matrix (Theta):\n")
+print(fit$wi)
+
+cat("Estimated Covariance Matrix (Sigma):\n")
+print(fit$w)
+```
+
+
+# 4. Graphical Lasso using custom optimization (optional extension)
+```{r}
+# Helper: construct symmetric matrix from vector (upper triangular)
+construct_symmetric_matrix <- function(theta_vec, d) {
+  Theta_mat <- matrix(0, d, d)
+  idx <- upper.tri(Theta_mat, diag=TRUE)
+  Theta_mat[idx] <- theta_vec
+  Theta_mat <- Theta_mat + t(Theta_mat) - diag(diag(Theta_mat))
+  return(Theta_mat)
+}
+
+penalized_log_likelihood <- function(theta_vec, S, lambda, d) {
+  Theta_mat <- construct_symmetric_matrix(theta_vec, d)
+  det_val <- det(Theta_mat)
+  if (det_val <= 0) return(Inf)
+  sum_abs <- sum(abs(Theta_mat))
+  val <- log(det_val) - sum(diag(S %*% Theta_mat)) - lambda * sum_abs + lambda * sum(abs(diag(Theta_mat)))
+  return(-val)   # negative for minimization
+}
+
+# Initialize random symmetric positive definite matrix
+A <- matrix(rnorm(d*d), d, d)
+Theta0 <- A %*% t(A) + d * diag(d)
+theta0_vec <- Theta0[upper.tri(Theta0, diag=TRUE)]
+
+lambda <- 1e-4
+
+res <- optim(
+  par = theta0_vec,
+  fn = penalized_log_likelihood,
+  S = EstimSigma,
+  lambda = lambda,
+  d = d,
+  method = "BFGS"
+)
+
+Theta_MLE <- construct_symmetric_matrix(res$par, d)
+Theta_MLE
+```
