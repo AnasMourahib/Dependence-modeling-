@@ -1,0 +1,194 @@
+---
+title: "Additive Noise Models: Illustration and Independence Test"
+author: "Anas Mourahib"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+############################################################
+# INTRODUCTION (TEXT EXPLANATION)
+############################################################
+
+## What is an Additive Noise Model?
+
+An **Additive Noise Model (ANM)** assumes that the effect variable
+can be written as
+
+\[
+Y = f(X) + N_Y
+\]
+
+where:
+
+- \(X\) is the cause
+- \(Y\) is the effect
+- \(N_Y\) is a noise term
+- \(N_Y\) is **independent** of \(X\)
+
+A key idea of ANMs is that this independence typically holds
+**only in the correct causal direction**.
+
+In this document, we simulate data where the true causal direction
+is:
+
+\[
+X \rightarrow Y
+\]
+
+and then compare it with the anti-causal direction.
+
+---
+
+############################################################
+# DATA GENERATION
+############################################################
+
+```{r}
+# ----------------------------------------------------------
+# Step 1: Set random seed for reproducibility
+# ----------------------------------------------------------
+set.seed(123)
+
+# ----------------------------------------------------------
+# Step 2: Define parameters
+# ----------------------------------------------------------
+a <- 0      # lower bound of uniform distribution
+b <- 1      # upper bound of uniform distribution
+n <- 10^3   # sample size
+
+# ----------------------------------------------------------
+# Step 3: Generate cause X
+# X is uniformly distributed on [0,1]
+# ----------------------------------------------------------
+X <- runif(n, a, b)
+
+# ----------------------------------------------------------
+# Step 4: Generate noise term N_Y
+# Noise is independent of X by construction
+# ----------------------------------------------------------
+N_Y <- runif(n, a, b)
+
+# ----------------------------------------------------------
+# Step 5: Generate effect Y using an additive noise model
+# True causal mechanism: Y = 0.5 * X + N_Y
+# ----------------------------------------------------------
+Y <- 0.5 * X + N_Y
+
+```
+
+############################################################
+
+CAUSAL DIRECTION: X -> Y
+
+############################################################
+
+Regression in the Correct Causal Direction
+
+We now regress Y on X, which corresponds to the true causal
+direction.
+
+If the ANM assumption is correct, the regression residuals
+should be independent of X.
+
+# ----------------------------------------------------------
+
+# Step 6: Fit linear regression Y ~ X
+
+# ----------------------------------------------------------
+```{r}
+causal_model <- lm(Y ~ X)
+
+# ----------------------------------------------------------
+
+# Step 7: Extract residuals
+
+# These residuals estimate the noise N_Y
+
+# ----------------------------------------------------------
+
+residual_causal <- residuals(causal_model)
+
+
+```
+
+Plot: Residuals vs X
+
+If residuals are independent of X, we should not see
+any systematic pattern.
+
+```{r}
+plot(
+X,
+residual_causal,
+xlab = "X (Cause)",
+ylab = "Residuals of regression Y on X",
+main = "Causal Direction: Y ~ X",
+pch = 16,
+col = rgb(0, 0, 1, 0.5)
+)
+
+
+
+
+
+```
+
+
+
+############################################################
+
+ANTI-CAUSAL DIRECTION: Y -> X
+
+############################################################
+
+Regression in the Wrong Direction
+
+Now we regress X on Y, corresponding to the anti-causal direction.
+
+In general, the residuals will not be independent of Y.
+
+
+
+```{r}
+
+# ----------------------------------------------------------
+
+# Step 8: Fit linear regression X ~ Y (anti-causal)
+
+# ----------------------------------------------------------
+
+anticausal_model <- lm(X ~ Y)
+
+# ----------------------------------------------------------
+
+# Step 9: Extract residuals
+
+# ----------------------------------------------------------
+
+residual_anticausal <- residuals(anticausal_model)
+
+
+
+```
+
+Plot: Residuals vs Y
+
+Dependence patterns typically appear here.
+
+
+```{r}
+plot(
+Y,
+residual_anticausal,
+xlab = "Y (Effect)",
+ylab = "Residuals of regression X on Y",
+main = "Anti-Causal Direction: X ~ Y",
+pch = 16,
+col = rgb(1, 0, 0, 0.5)
+)
+
+
+
+
+
+```
