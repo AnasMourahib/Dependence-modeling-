@@ -14,7 +14,7 @@ The knitted HTML report for the **Session 3 group work (R version)** can be view
 
 The knitted HTML report for the **Graphical Lasso implemented in R** is available at:
 
-👉 **[Open the report](https://anasmourahib.github.io/Dependence-modeling-/graphical_lasso.html)**
+👉 **[Open the report](https://anasmourahib.github.io/Dependence-modeling-/Session3/graphical_lasso.html)**
 
 > **Note:** Do **not** open the raw `docs/graphical_lasso.html` file on GitHub.  
 > GitHub will not render the HTML properly.  
