@@ -272,4 +272,4 @@ cat(
 
 ############################################################
 
-The ANM method validates the true causal model X -> Y. Note that this is a simple case where the function $f$ is linear. Another challenging case would be if $f$ is not linear which you can find in another file 
+The ANM method validates the true causal model X -> Y. 
