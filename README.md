@@ -1,4 +1,21 @@
-## 📄 HTML Report — Group Work (Session 3, R Implementation)
+## 📄 Report — Maximum likelihood estimator for the precision matrix (Session 2, R and Implementation)
+
+The knitted HTML report for the **Maximum likelihood estimator for the precision matrix** can be viewed here:
+
+👉 **[Open the report](https://anasmourahib.github.io/Dependence-modeling-/Session2/estimation_precision_matrix.html)**
+
+> **Note:** Avoid opening the raw `docs/group_work.html` file directly on GitHub.  
+> GitHub will display only the HTML source code.  
+> Use the link above to view the fully rendered report.
+
+The Jupyter Notebook for the **Maximum likelihood estimator for the precision matrix (Python version)** can be viewed online here:
+
+👉 **[Open the notebook](https://github.com/AnasMourahib/Dependence-modeling-/blob/main/Session2/estimation_precision_matrix.ipynb)**
+
+---
+
+
+## 📄 Report — Group Work (Session 3, R and Python Implementation)
 
 The knitted HTML report for the **Session 3 group work (R version)** can be viewed here:
 
