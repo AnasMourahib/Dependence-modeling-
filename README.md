@@ -36,6 +36,6 @@ The Jupyter Notebook for the **Session 3 group work (Python version)** can be vi
 
 The Jupyter Notebook for the **Graphical Lasso implemented in Python** is available at:
 
-👉 **[Open the notebook](https://anasmourahib.github.io/Dependence-modeling-/graphical_lasso.ipynb)**
+👉 **[Open the notebook](https://github.com/AnasMourahib/Dependence-modeling-/blob/main/Session3/graphical_lasso.ipynb)**
 
 
