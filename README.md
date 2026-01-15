@@ -1,4 +1,4 @@
-## 📄 Report — Maximum likelihood estimator for the precision matrix (Session 2, R and Implementation)
+## 📄 Report — Maximum likelihood estimator for the precision matrix (Session 2, R and Python Implementations)
 
 The knitted HTML report for the **Maximum likelihood estimator for the precision matrix** can be viewed here:
 
