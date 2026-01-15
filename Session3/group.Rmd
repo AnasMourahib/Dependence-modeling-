@@ -1,0 +1,153 @@
+---
+title: "Gaussian Graphical Model on a 4-Cycle"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+# Introduction
+
+In this notebook we study a 4-dimensional Gaussian graphical model whose 
+precision matrix corresponds to the **cycle graph**:
+
+\[
+1 \;-\; 2 \;-\; 3 \;-\; 4 \;-\; 1.
+\]
+
+Zeros in the **precision matrix** encode conditional independences.  
+We will:
+
+1. Define the precision matrix \( \Theta \)
+2. Compute the covariance matrix \( \Sigma = \Theta^{-1} \)
+3. Simulate a sample \(X_1,\dots,X_N \sim \mathcal{N}(0, \Sigma)\)
+4. Standardize the margins to variance 1
+5. Estimate covariance and precision matrices from data
+6. Compute the maximum-likelihood estimate (MLE) of the precision matrix
+
+---
+
+# 1. Precision Matrix and Covariance
+
+```{r}
+library(MASS)
+
+# 4-cycle precision matrix
+Theta <- matrix(c(
+  10,  5,  0,  3,
+   5, 10,  5,  0,
+   0,  5, 10,  5,
+   3,  0,  5, 10
+), nrow = 4, byrow = TRUE)
+
+# Covariance matrix = inverse of precision
+Sigma <- solve(Theta)
+Sigma
+```
+
+---
+
+# 2. Simulate a Gaussian Sample
+
+We simulate a large sample from the multivariate normal distribution.
+
+```{r}
+N <- 10^6
+d <- 4
+mean_vec <- rep(0, d)
+
+set.seed(1)
+X <- mvrnorm(N, mu = mean_vec, Sigma = Sigma)
+head(X)
+```
+
+---
+
+# 3. Standardize Margins to Variance 1
+
+```{r}
+std <- sqrt(diag(Sigma))
+X_std <- sweep(X, 2, std, FUN = "/")
+
+# Verify variances are ~1
+apply(X_std, 2, var)
+```
+
+---
+
+# 4. Estimate Covariance and Precision From the Data
+
+```{r}
+EstimSigma <- cov(X_std)
+EstimTheta <- solve(EstimSigma)
+
+EstimSigma
+EstimTheta
+```
+
+---
+
+# 5. Maximum-Likelihood Estimation of Θ
+
+We parameterize Θ using only the **upper triangular entries**.
+
+### Helper Functions
+
+```{r}
+# Construct symmetric matrix from upper-triangular vector
+construct_symmetric_matrix <- function(theta_vec, d) {
+  Theta_mat <- matrix(0, d, d)
+  idx <- which(upper.tri(Theta_mat, diag = TRUE))
+  Theta_mat[idx] <- theta_vec
+  Theta_mat <- Theta_mat + t(Theta_mat) - diag(diag(Theta_mat))
+  return(Theta_mat)
+}
+
+# Gaussian log-likelihood
+log_likelihood <- function(theta_vec, S, d) {
+  Theta_mat <- construct_symmetric_matrix(theta_vec, d)
+  det_val <- det(Theta_mat)
+  if (det_val <= 0) return(-Inf)
+  return(log(det_val) - sum(S * Theta_mat))
+}
+```
+
+---
+
+# Initial Positive-Definite Guess
+
+```{r}
+set.seed(123)
+A <- matrix(rnorm(d*d), d, d)
+Theta0 <- A %*% t(A) + d * diag(d)
+
+upper_idx <- which(upper.tri(Theta0, diag = TRUE))
+theta0_vec <- Theta0[upper_idx]
+```
+
+---
+
+# Optimization
+
+We minimize the negative log-likelihood.
+
+```{r}
+optim_result <- optim(
+  par = theta0_vec,
+  fn = function(par) -log_likelihood(par, EstimSigma, d),
+  control = list(maxit = 1000)
+)
+
+Theta_MLE <- construct_symmetric_matrix(optim_result$par, d)
+Theta_MLE
+```
+
+---
+
+# Conclusion
+
+- We simulated a Gaussian vector respecting a graph structure  
+- We estimated covariance and precision matrices  
+- We computed the **MLE precision matrix**  
+- The MLE recovers the original sparsity pattern of the graph
+
+This provides a full demonstration of how Gaussian graphical models behave in practice.
