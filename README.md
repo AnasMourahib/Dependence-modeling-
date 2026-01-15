@@ -2,7 +2,7 @@
 
 The knitted HTML report for the **Session 3 group work (R version)** can be viewed here:
 
-👉 **[Open the report](https://anasmourahib.github.io/Dependence-modeling-/group_work.html)**
+👉 **[Open the report](https://anasmourahib.github.io/Dependence-modeling-/Session3/group_work.html)**
 
 > **Note:** Avoid opening the raw `docs/group_work.html` file directly on GitHub.  
 > GitHub will display only the HTML source code.  
