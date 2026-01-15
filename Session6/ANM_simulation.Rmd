@@ -36,10 +36,18 @@ In this document, we simulate data where the true causal direction
 is:
 
 \[
-X \rightarrow Y
+X \rightarrow Y 
 \]
 
 and then compare it with the anti-causal direction.
+
+
+We consider the simple linear model 
+
+\[
+Y = 0.5 X  + N_Y,
+\]
+where $X,N_Y$ are independent uniform random variables on the set $[0,1]$.
 
 ---
 
@@ -88,7 +96,6 @@ Y <- 0.5 * X + N_Y
 
 # ----------------------------------------------------------
 
-Regression in the Correct Causal Direction
 
 We now regress Y on X, which corresponds to the true causal
 direction.
@@ -119,7 +126,7 @@ residual_causal <- residuals(causal_model)
 
 ```
 
-Plot: Residuals vs X
+
 
 If residuals are independent of X, we should not see
 any systematic pattern.
@@ -151,14 +158,14 @@ col = rgb(0, 0, 1, 0.5)
 
 
 
-To test whether two samples $U$ and $V$ are independent, you can use the \emph{Hilbert--Schmidt Independence Criterion (HSIC)} test; Gretton, A., K. Fukumizu, C. H. Teo, L. Song, B. Sch\"olkopf and A. J. Smola (2007). A kernel statistical test of independence. In Advances in Neural Information Processing Systems (pp. 585-592).
+To test whether two samples $U$ and $V$ are independent, you can use the **Hilbert--Schmidt Independence Criterion (HSIC)** test; Gretton, A., K. Fukumizu, C. H. Teo, L. Song, B. Scholkopf and A. J. Smola (2007). A kernel statistical test of independence.
 This test considers the hypotheses
 \[
 H_0 : U \!\perp\!\!\!\perp V, \qquad
 H_1 : U \not\!\perp\!\!\!\perp V.
 \]
 
-In \textsf{R}, the test can be performed using the \texttt{dHSIC} package as follows:
+In **R**, the test can be performed using the **dHSIC** package as follows:
 
 
 ```{r}
@@ -170,7 +177,7 @@ pvalue_causal = dtes_causal$p.value
 cat(
   "This is the p-value for testing X independent of the residuals of Y on X:",
   pvalue_causal,
-  ". Since this p-value is smaller than 0.05, we reject the null hypothesis H_0 of independence."
+  ". Since this p-value is larger than 0.05, we keep the null hypothesis H_0 of independence."
 )
 
 
@@ -183,7 +190,6 @@ cat(
 
 # ----------------------------------------------------------
 
-Regression in the Wrong Direction
 
 Now we regress X on Y, corresponding to the anti-causal direction.
 
@@ -213,7 +219,6 @@ residual_anticausal <- residuals(anticausal_model)
 
 ```
 
-Plot: Residuals vs Y
 
 Dependence patterns typically appear here.
 
