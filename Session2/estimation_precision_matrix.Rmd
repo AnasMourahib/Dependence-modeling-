@@ -29,6 +29,18 @@ We will:
 
 # 1. Precision Matrix and Covariance
 
+We consider the following precision matrix 
+
+$$
+\begin{pmatrix}
+10 & 5 & 0 &3\\
+5 & 10 & 5 &0\\
+0 & 5 & 10 &5\\
+3 & 0 & 5 & 10\\
+\end{pmatrix}.
+$$
+
+
 ```{r}
 library(MASS)
 
@@ -49,7 +61,7 @@ Sigma
 
 # 2. Simulate a Gaussian Sample
 
-We simulate a large sample from the multivariate normal distribution.
+We simulate a large sample from the multivariate normal distribution with covariance matrix $\Sigma = \Theta^{-1}$
 
 ```{r}
 N <- 10^6
@@ -79,7 +91,12 @@ EstimTheta
 
 # 4. Maximum-Likelihood Estimation of Θ
 
-We parameterize Θ using only the **upper triangular entries**.
+We parameterize $\Theta$ using only the **upper triangular entries**. We then implement the log-Likelihood function:
+
+$$
+L(\Theta) =  \log \det(\Theta) - trace (S \cdot \Theta), 
+$$
+where $S$ is the MLE covariance matrix.
 
 ### Helper Functions
 
@@ -120,7 +137,7 @@ theta0_vec <- Theta0[upper_idx]
 
 # Optimization
 
-We minimize the negative log-likelihood.
+We minimize the negative log-likelihood using the **Broyden–Fletcher–Goldfarb–Shanno algorithm**
 
 ```{r}
 optim_result <- optim(
