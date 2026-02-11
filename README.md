@@ -60,7 +60,7 @@ The Jupyter Notebook for the **Graphical Lasso implemented in Python** is availa
 
 ## 📄 HTML Report — Linear structural causal models 
 
-The knitted HTML report for the **Linear structural causal model** is available at:
+The knitted HTML report for **Linear structural causal models** is available at:
 
 👉 **[Open the report](https://github.com/AnasMourahib/Dependence-modeling-/blob/main/Session4/linear-structural-causal-models.html)**
 
