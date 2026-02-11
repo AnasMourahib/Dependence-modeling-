@@ -1,3 +1,23 @@
+# Dependence Modeling — Reports and Notebooks
+
+This repository contains lecture and practical materials for **Dependence Modeling**, covering R and Python implementations of various statistical and causal methods. Each session includes a combination of:
+
+- **Knitted HTML reports** from R Markdown files, which provide explanations, results, and visualizations.
+- **Jupyter Notebooks** in Python, allowing you to reproduce analyses and explore examples interactively.
+- **PDF summaries** for specific examples or exercises.  
+
+**Session overview:**
+
+- **Session 2:** Maximum likelihood estimator for the precision matrix.  
+- **Session 3:** Group work and Graphical Lasso (R and Python).  
+- **Session 4:** Linear structural causal models.  
+- **Session 5:** Simpson’s Paradox and hidden common factors.  
+- **Session 6:** Causal structure learning using additive noise models, including limitations.
+
+All HTML reports are rendered via GitHub Pages. **Do not open the raw HTML files on GitHub**, as they will display the source code instead of the rendered report. Use the provided links to view the fully rendered versions.
+
+---
+
 ## 📄 Report — Maximum likelihood estimator for the precision matrix (Session 2, R and Python Implementations)
 
 The knitted HTML report for the **Maximum likelihood estimator for the precision matrix** can be viewed here:
@@ -13,7 +33,6 @@ The knitted HTML report for the **Maximum likelihood estimator for the precision
 👉 **[Open the notebook](https://github.com/AnasMourahib/Dependence-modeling-/blob/main/Session2/estimation_precision_matrix.ipynb)**
 
 ---
-
 
 ## 📄 Report — Group Work (Session 3, R and Python Implementation)
 
@@ -45,8 +64,6 @@ The Jupyter Notebook for the **Session 3 group work (Python version)** can be vi
 
 👉 **[Open the notebook](https://github.com/AnasMourahib/Dependence-modeling-/blob/main/Session3/group_work.ipynb)**
 
-
-
 ---
 
 ## 📄 Notebook — Graphical Lasso in Python (sklearn Implementation)
@@ -54,7 +71,6 @@ The Jupyter Notebook for the **Session 3 group work (Python version)** can be vi
 The Jupyter Notebook for the **Graphical Lasso implemented in Python** is available at:
 
 👉 **[Open the notebook](https://github.com/AnasMourahib/Dependence-modeling-/blob/main/Session3/graphical_lasso.ipynb)**
-
 
 ---
 
@@ -68,21 +84,19 @@ The knitted HTML report for **Linear structural causal models** is available at:
 > GitHub will not render the HTML properly.  
 > Use the link above for the rendered version.
 
-
 ---
 
 ## 📄 (Session 5, simple example of Simpson's Paradox and hidden common factors) 
 
-The PDF file with the exmaple is available at 
+The PDF file with the example is available at:
 
 👉 **[Open the pdf file](https://github.com/AnasMourahib/Dependence-modeling-/blob/main/Session5/Simpson's%20paradox.pdf)**
 
-
 ---
 
-## 📄HTML Report — (Session 6, causal structure learning using additive noise models, R implementatiom) 
+## 📄HTML Report — (Session 6, causal structure learning using additive noise models, R implementation) 
 
-The knitted HTML report for **additive noise moodels** method is available at:
+The knitted HTML report for **additive noise models** method is available at:
 
 👉 **[Open the report](https://anasmourahib.github.io/Dependence-modeling-/Session6/ANM_simulation.html)**
 
@@ -94,13 +108,13 @@ The knitted HTML report for **additive noise moodels** method is available at:
 
 ## 📄 Notebook —  (Session 6, causal structure learning using additive noise models, Python implementation) 
 
-The Jupyter Notebook for the **additive noise moodels** is available at:
+The Jupyter Notebook for the **additive noise models** is available at:
 
 👉 **[Open the notebook](https://github.com/AnasMourahib/Dependence-modeling-/blob/main/Session6/ANM_simulation.ipynb)**
 
 ---
 
-## 📄HTML Report — (Session 6, limitation of additive noise models, R implementatiom) 
+## 📄HTML Report — (Session 6, limitation of additive noise models, R implementation) 
 
 The knitted HTML report for **limitation of additive noise models** is available at:
 
