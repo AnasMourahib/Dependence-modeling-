@@ -68,8 +68,52 @@ The knitted HTML report for **Linear structural causal models** is available at:
 > GitHub will not render the HTML properly.  
 > Use the link above for the rendered version.
 
+
+---
+
 ## 📄 (Session 5, simple example of Simpson's Paradox and hidden common factors) 
 
 The PDF file with the exmaple is available at 
 
 👉 **[Open the pdf file](https://github.com/AnasMourahib/Dependence-modeling-/blob/main/Session5/Simpson's%20paradox.pdf)**
+
+
+---
+
+## 📄HTML Report — (Session 6, causal structure learning using additive noise models, R implementatiom) 
+
+The knitted HTML report for **additive noise moodels** method is available at:
+
+👉 **[Open the report](https://github.com/AnasMourahib/Dependence-modeling-/blob/main/Session6/ANM_simulation.html)**
+
+> **Note:** Do **not** open the raw `docs/graphical_lasso.html` file on GitHub.  
+> GitHub will not render the HTML properly.  
+> Use the link above for the rendered version.
+
+---
+
+## 📄 Notebook —  (Session 6, causal structure learning using additive noise models, Python implementation) 
+
+The Jupyter Notebook for the **additive noise moodels** is available at:
+
+👉 **[Open the notebook](https://github.com/AnasMourahib/Dependence-modeling-/blob/main/Session6/ANM_simulation.ipynb)**
+
+---
+
+## 📄HTML Report — (Session 6, limitation of additive noise models, R implementatiom) 
+
+The knitted HTML report for **limitation of additive noise models** is available at:
+
+👉 **[Open the report](https://github.com/AnasMourahib/Dependence-modeling-/blob/main/Session6/ANM_Gaussian_linear.html)**
+
+> **Note:** Do **not** open the raw `docs/graphical_lasso.html` file on GitHub.  
+> GitHub will not render the HTML properly.  
+> Use the link above for the rendered version.
+
+---
+
+## 📄 Notebook —  (Session 6, causal structure learning using additive noise models, Python implementation) 
+
+The Jupyter Notebook for the  **limitation of additive noise models** is available at:
+
+👉 **[Open the notebook](https://github.com/AnasMourahib/Dependence-modeling-/blob/main/Session6/ANM_Gaussian_linear.ipynb)**
