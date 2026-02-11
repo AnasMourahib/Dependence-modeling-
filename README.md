@@ -84,7 +84,7 @@ The PDF file with the exmaple is available at
 
 The knitted HTML report for **additive noise moodels** method is available at:
 
-👉 **[Open the report](https://github.com/AnasMourahib/Dependence-modeling-/blob/main/Session6/ANM_simulation.html)**
+👉 **[Open the report](https://anasmourahib.github.io/Dependence-modeling-/Session6/ANM_simulation.html)**
 
 > **Note:** Do **not** open the raw `docs/graphical_lasso.html` file on GitHub.  
 > GitHub will not render the HTML properly.  
@@ -104,7 +104,7 @@ The Jupyter Notebook for the **additive noise moodels** is available at:
 
 The knitted HTML report for **limitation of additive noise models** is available at:
 
-👉 **[Open the report](https://github.com/AnasMourahib/Dependence-modeling-/blob/main/Session6/ANM_Gaussian_linear.html)**
+👉 **[Open the report](https://anasmourahib.github.io/Dependence-modeling-/Session6/ANM_Gaussian_linear.html)**
 
 > **Note:** Do **not** open the raw `docs/graphical_lasso.html` file on GitHub.  
 > GitHub will not render the HTML properly.  
