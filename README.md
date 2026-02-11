@@ -112,7 +112,7 @@ The knitted HTML report for **limitation of additive noise models** is available
 
 ---
 
-## 📄 Notebook —  (Session 6, causal structure learning using additive noise models, Python implementation) 
+## 📄 Notebook —  (Session 6, limitation of additive noise models, Python implementation) 
 
 The Jupyter Notebook for the  **limitation of additive noise models** is available at:
 
