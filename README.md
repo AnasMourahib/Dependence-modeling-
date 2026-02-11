@@ -58,7 +58,7 @@ The Jupyter Notebook for the **Graphical Lasso implemented in Python** is availa
 
 ---
 
-## 📄 HTML Report — Linear structural causal models 
+## 📄 HTML Report — (Session 4, Linear structural causal models) 
 
 The knitted HTML report for **Linear structural causal models** is available at:
 
@@ -68,3 +68,8 @@ The knitted HTML report for **Linear structural causal models** is available at:
 > GitHub will not render the HTML properly.  
 > Use the link above for the rendered version.
 
+## 📄 (Session 5, simple example of Simpson's Paradox and hidden common factors) 
+
+The PDF file with the exmaple is available at 
+
+👉 **[Open the pdf file](https://github.com/AnasMourahib/Dependence-modeling-/blob/main/Session5/Simpson's%20paradox.pdf)**
