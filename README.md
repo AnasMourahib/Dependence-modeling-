@@ -8,7 +8,7 @@ The knitted HTML report for the **Maximum likelihood estimator for the precision
 > GitHub will display only the HTML source code.  
 > Use the link above to view the fully rendered report.
 
-## 📄 The Jupyter Notebook for the **Maximum likelihood estimator for the precision matrix (Python version)** can be viewed online here:
+## 📄 Report — The Jupyter Notebook for the **Maximum likelihood estimator for the precision matrix (Python version)** can be viewed online here:
 
 👉 **[Open the notebook](https://github.com/AnasMourahib/Dependence-modeling-/blob/main/Session2/estimation_precision_matrix.ipynb)**
 
