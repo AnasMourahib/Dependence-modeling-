@@ -6,7 +6,7 @@ output: html_document
 
 # Graphical Lasso (R version)
 
-This RMarkdown generates a Gaussian sample from a precision matrix representing a $4$-dimensional graph with $2$ cliques $\{1,2,3\}$ and $\{2 , 3 , 4\}$, estimates the covariance, and then the precision amtrix first using glasso package and then by minimizing a custom implementation of the minimization function 
+This RMarkdown generates a Gaussian sample from a precision matrix representing a $4$-dimensional graph with $2$ cliques $\{1,2,3\}$ and $\{2 , 3 , 4\}$, estimates the covariance, and then the precision matrix first using glasso package and then by minimizing a custom implementation of the LASSO-loglikelihood function.
 
 ```{r}
 # Load libraries
@@ -14,6 +14,19 @@ library(MASS)       # for mvrnorm
 library(glasso)     # for graphical lasso
 ```
 # 1. Define precision matrix Theta and compute Sigma
+
+Consider the following precision matrix 
+
+$$
+\Theta =
+\begin{pmatrix}
+10 & 5 & 3 & 0 \\
+5 & 10 & 5 & 3 \\
+3 & 5 & 10 & 5 \\
+0 & 3 & 5 & 10
+\end{pmatrix}.
+$$
+We define the matrix $\Sigma$ as the inverse of $\Theta$, that is, $\Sigma = \Theta^{-1}$.
 ```{r}
 Theta <- matrix(c(
   10, 5, 3, 0,
@@ -27,6 +40,7 @@ Sigma
 ```
 
 # 2. Simulate Gaussian sample
+We simulate form a centered Gaussian distribution with covariance matrix $\Sigma$
 ```{r}
 set.seed(7)
 N <- 10^4
@@ -37,24 +51,37 @@ head(X)
 
 # Sample covariance
 EstimSigma <- cov(X)
-EstimSigma
+cat("This is the sample covariance matrix computed from the sample:\n")
+print(EstimSigma)
 ```
 
 # 3. Graphical Lasso using glasso package
+We compute the estimated precision matrix $\hat{\Theta}_{pr}$ using the predefined function **glasso()** from the **R** package **glasso**, see \url{https://cran.r-project.org/web/packages/glasso/index.html}. As a penalization term, we fix $\lambda = 8\cdot 10^{-4}$. 
+
 ```{r}
-alpha <- 8e-4   # penalty parameter
+lambda <- 8e-4   # penalty parameter
 
-fit <- glasso(EstimSigma, rho = alpha)
+fit <- glasso(EstimSigma, rho = lambda)
 
-cat("Estimated Precision Matrix (Theta):\n")
+cat("Estimated Precision Matrix (Theta) using the glasso package:\n")
 print(fit$wi)
 
-cat("Estimated Covariance Matrix (Sigma):\n")
-print(fit$w)
 ```
 
 
-# 4. Graphical Lasso using custom optimization (optional extension)
+# 4. Graphical Lasso using an implementation of the LASSO-loglikelihood function 
+We implement the Lasso log-Likelihood function given by 
+
+$$
+L(\Theta) =  \log \det(\Theta) - trace (S \cdot \Theta) -\lambda \| \Theta \|_1,
+$$
+where $\| \Theta \|_1$ is the sum of the absolute value of the entries from the precision matrix $\Theta$ and $S$ is MLE covariance matrix, that is:
+$$
+S = \frac{1}{n} \sum_{i =1}^n X_i^t X_i
+$$
+
+
+We minimize the Lasso-loglikelihood function using the function **optim()** with the **Broyden–Fletcher–Goldfarb–Shanno algorithm** method and we randomly choose initial values for the first step of the minimization. We get the estimate $\hat{\Theta}_2$.
 ```{r}
 # Helper: construct symmetric matrix from vector (upper triangular)
 construct_symmetric_matrix <- function(theta_vec, d) {
@@ -75,11 +102,12 @@ penalized_log_likelihood <- function(theta_vec, S, lambda, d) {
 }
 
 # Initialize random symmetric positive definite matrix
+set.seed(7)
 A <- matrix(rnorm(d*d), d, d)
 Theta0 <- A %*% t(A) + d * diag(d)
 theta0_vec <- Theta0[upper.tri(Theta0, diag=TRUE)]
 
-lambda <- 1e-4
+lambda <- 8e-4
 
 res <- optim(
   par = theta0_vec,
@@ -90,6 +118,13 @@ res <- optim(
   method = "BFGS"
 )
 
+
+
 Theta_MLE <- construct_symmetric_matrix(res$par, d)
 Theta_MLE
+
+cat("Estimated Precision Matrix (Theta) using implemented LASSO log-likelihood function:\n")
+print(fit$wi)
+
 ```
+Note that the estimator based on the LASSO likelihood function, denoted by $\hat{\Theta}_2$, is relatively close to the true precision matrix $\Theta$. However, $\hat{\Theta}_2$ fails to correctly identify the zero entry $\Theta_{14} = \Theta_{41} = 0$. In contrast, the estimator $\hat{\Theta}_1$ successfully detects $\Theta_{14} = \Theta_{41} = 0$. According to the documentation of \texttt{glasso()}, both Methods~1 and~2 rely on the same loss function; the discrepancy in the estimates arises from differences in the minimization procedure, as \texttt{glasso()} employs the algorithm proposed by Friedman, Hastie, and Tibshirani~(2007).

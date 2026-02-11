@@ -21,13 +21,26 @@ We will:
 2. Compute the covariance matrix \( \Sigma = \Theta^{-1} \)
 3. Simulate a sample \(X_1,\dots,X_N \sim \mathcal{N}(0, \Sigma)\)
 4. Standardize the margins to variance 1
-5. Estimate covariance and precision matrices from data
-6. Compute the maximum-likelihood estimate (MLE) of the precision matrix
+5. Estimate the precision matrix as the inverse of the MLE covariance matrix
+6. Estimate the precision matrix using the MLE estimator
+7. Compare the two estimates
 
 ---
 
 # 1. Precision Matrix and Covariance
 
+Consider the following precision matrix 
+
+$$
+\Theta =
+\begin{pmatrix}
+10 & 5 & 0 & 3 \\
+5 & 10 & 5 & 0 \\
+0 & 5 & 10 & 5 \\
+3 & 0 & 5 & 10
+\end{pmatrix}.
+$$
+We define the matrix $\Sigma$ as the inverse of $\Theta$, that is, $\Sigma = \Theta^{-1}$.
 ```{r}
 library(MASS)
 
@@ -48,7 +61,7 @@ Sigma
 
 # 2. Simulate a Gaussian Sample
 
-We simulate a large sample from the multivariate normal distribution.
+We simulate a large sample from a centered multivariate normal distribution with covariance matrix $\Sigma$.
 
 ```{r}
 N <- 10^6
@@ -63,7 +76,7 @@ head(X)
 ---
 
 # 3. Standardize Margins to Variance 1
-
+We standardize the margins to variance 1
 ```{r}
 std <- sqrt(diag(Sigma))
 X_std <- sweep(X, 2, std, FUN = "/")
@@ -75,20 +88,37 @@ apply(X_std, 2, var)
 ---
 
 # 4. Estimate Covariance and Precision From the Data
+We compute the MLE covariance matrix $$
+S = \frac{1}{n} \sum_{i =1}^n X_i^t X_i
+$$
+from our sample and then invert it to get an estimate of the precision matrix. 
 
 ```{r}
 EstimSigma <- cov(X_std)
+MLE_EstimSigma = ((N-1)/N) * EstimSigma
 EstimTheta <- solve(EstimSigma)
 
-EstimSigma
-EstimTheta
+
+cat("This is the MLE for covariance matrix computed from the sample:\n")
+print(MLE_EstimSigma)
+cat("This is the estimate of the precision matrix computed as the inverse of the MLE covariance matrix:\n")
+print(EstimTheta)
+
 ```
 
 ---
 
 # 5. Maximum-Likelihood Estimation of Θ
 
-We parameterize Θ using only the **upper triangular entries**.
+We parameterize Θ using only the **upper triangular entries** and then define the log-likelihood function given by 
+$$
+L(\Theta) =  \log \det(\Theta) - trace (S \cdot \Theta) 
+$$
+where $S$ is MLE covariance matrix, that is:
+$$
+S = \frac{1}{n} \sum_{i =1}^n X_i^t X_i
+$$
+
 
 ### Helper Functions
 
@@ -114,24 +144,23 @@ log_likelihood <- function(theta_vec, S, d) {
 
 ---
 
-# Initial Positive-Definite Guess
+# 
+
+---
+
+# Optimization
+
+We minimize the negative loglikelihood function using the function **optim()** with the **Broyden–Fletcher–Goldfarb–Shanno algorithm** method and we randomly choose initial values for the first step of the minimization.
 
 ```{r}
+#Initial Positive-Definite Guess for the minimization
 set.seed(7)
 A <- matrix(rnorm(d*d), d, d)
 Theta0 <- A %*% t(A) + d * diag(d)
 
 upper_idx <- which(upper.tri(Theta0, diag = TRUE))
 theta0_vec <- Theta0[upper_idx]
-```
 
----
-
-# Optimization
-
-We minimize the negative log-likelihood.
-
-```{r}
 optim_result <- optim(
   par = theta0_vec,
   fn = function(par) -log_likelihood(par, EstimSigma, d),
@@ -139,16 +168,22 @@ optim_result <- optim(
 )
 
 Theta_MLE <- construct_symmetric_matrix(optim_result$par, d)
-Theta_MLE
+cat("Estimated Precision Matrix (Theta) using implemented LASSO log-likelihood function:\n")
+print(Theta_MLE)
 ```
 
 ---
 
 # Conclusion
 
-- We simulated a Gaussian vector respecting a graph structure  
-- We estimated covariance and precision matrices  
-- We computed the **MLE precision matrix**  
-- The MLE recovers the original sparsity pattern of the graph
 
-This provides a full demonstration of how Gaussian graphical models behave in practice.
+-We simulated a Gaussian vector consistent with a given graph structure.
+
+-The precision matrix was initially estimated by inverting the MLE for the covariance matrix.
+
+-We then computed the MLE of the precision matrix by maximizing the log-likelihood (equivalently, minimizing the negative log-likelihood).
+
+-Both methods yielded the same results, confirming that the MLE for the precision matrix coincides with the inverse of the sample covariance matrix.
+
+-However, neither method identified exact zeros for $\theta_{13}$ and $\theta_{24}$
+. Introducing a lasso penalization with an appropriate regularization term could address this limitation.

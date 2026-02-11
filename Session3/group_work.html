@@ -371,14 +371,25 @@ We will:</p>
 <li>Simulate a sample <span class="math inline">\(X_1,\dots,X_N \sim
 \mathcal{N}(0, \Sigma)\)</span></li>
 <li>Standardize the margins to variance 1</li>
-<li>Estimate covariance and precision matrices from data</li>
-<li>Compute the maximum-likelihood estimate (MLE) of the precision
+<li>Estimate the precision matrix as the inverse of the MLE covariance
 matrix</li>
+<li>Estimate the precision matrix using the MLE estimator</li>
+<li>Compare the two estimates</li>
 </ol>
 <hr />
 </div>
 <div id="precision-matrix-and-covariance" class="section level1">
 <h1>1. Precision Matrix and Covariance</h1>
+<p>Consider the following precision matrix</p>
+<p><span class="math display">\[
+\Theta =
+\begin{pmatrix}
+10 &amp; 5 &amp; 0 &amp; 3 \\
+5 &amp; 10 &amp; 5 &amp; 0 \\
+0 &amp; 5 &amp; 10 &amp; 5 \\
+3 &amp; 0 &amp; 5 &amp; 10
+\end{pmatrix}.
+\]</span> We define the matrix <span class="math inline">\(\Sigma\)</span> as the inverse of <span class="math inline">\(\Theta\)</span>, that is, <span class="math inline">\(\Sigma = \Theta^{-1}\)</span>.</p>
 <pre class="r"><code>library(MASS)
 
 # 4-cycle precision matrix
@@ -401,8 +412,8 @@ Sigma</code></pre>
 </div>
 <div id="simulate-a-gaussian-sample" class="section level1">
 <h1>2. Simulate a Gaussian Sample</h1>
-<p>We simulate a large sample from the multivariate normal
-distribution.</p>
+<p>We simulate a large sample from a centered multivariate normal
+distribution with covariance matrix <span class="math inline">\(\Sigma\)</span>.</p>
 <pre class="r"><code>N &lt;- 10^6
 d &lt;- 4
 mean_vec &lt;- rep(0, d)
@@ -421,6 +432,7 @@ head(X)</code></pre>
 </div>
 <div id="standardize-margins-to-variance-1" class="section level1">
 <h1>3. Standardize Margins to Variance 1</h1>
+<p>We standardize the margins to variance 1</p>
 <pre class="r"><code>std &lt;- sqrt(diag(Sigma))
 X_std &lt;- sweep(X, 2, std, FUN = &quot;/&quot;)
 
@@ -431,16 +443,26 @@ apply(X_std, 2, var)</code></pre>
 </div>
 <div id="estimate-covariance-and-precision-from-the-data" class="section level1">
 <h1>4. Estimate Covariance and Precision From the Data</h1>
+<p>We compute the MLE covariance matrix <span class="math display">\[
+S = \frac{1}{n} \sum_{i =1}^n X_i^t X_i
+\]</span> from our sample and then invert it to get an estimate of the
+precision matrix.</p>
 <pre class="r"><code>EstimSigma &lt;- cov(X_std)
+MLE_EstimSigma = ((N-1)/N) * EstimSigma
 EstimTheta &lt;- solve(EstimSigma)
 
-EstimSigma</code></pre>
+
+cat(&quot;This is the MLE for covariance matrix computed from the sample:\n&quot;)</code></pre>
+<pre><code>## This is the MLE for covariance matrix computed from the sample:</code></pre>
+<pre class="r"><code>print(MLE_EstimSigma)</code></pre>
 <pre><code>##            [,1]       [,2]       [,3]       [,4]
-## [1,]  1.0010157 -0.7840069  0.6964156 -0.7001206
-## [2,] -0.7840069  1.0009229 -0.8033150  0.6965282
-## [3,]  0.6964156 -0.8033150  1.0001734 -0.7832021
-## [4,] -0.7001206  0.6965282 -0.7832021  1.0000957</code></pre>
-<pre class="r"><code>EstimTheta</code></pre>
+## [1,]  1.0010147 -0.7840061  0.6964149 -0.7001199
+## [2,] -0.7840061  1.0009219 -0.8033142  0.6965275
+## [3,]  0.6964149 -0.8033142  1.0001724 -0.7832014
+## [4,] -0.7001199  0.6965275 -0.7832014  1.0000947</code></pre>
+<pre class="r"><code>cat(&quot;This is the estimate of the precision matrix computed as the inverse of the MLE covariance matrix:\n&quot;)</code></pre>
+<pre><code>## This is the estimate of the precision matrix computed as the inverse of the MLE covariance matrix:</code></pre>
+<pre class="r"><code>print(EstimTheta)</code></pre>
 <pre><code>##              [,1]         [,2]         [,3]         [,4]
 ## [1,] 2.9362015211  1.687379837 0.0003530772  0.880579931
 ## [2,] 1.6873798374  3.877125294 1.9381863262 -0.001165772
@@ -451,7 +473,13 @@ EstimSigma</code></pre>
 <div id="maximum-likelihood-estimation-of-θ" class="section level1">
 <h1>5. Maximum-Likelihood Estimation of Θ</h1>
 <p>We parameterize Θ using only the <strong>upper triangular
-entries</strong>.</p>
+entries</strong> and then define the log-likelihood function given by
+<span class="math display">\[
+L(\Theta) =  \log \det(\Theta) - trace (S \cdot \Theta)
+\]</span> where <span class="math inline">\(S\)</span> is MLE covariance
+matrix, that is: <span class="math display">\[
+S = \frac{1}{n} \sum_{i =1}^n X_i^t X_i
+\]</span></p>
 <div id="helper-functions" class="section level3">
 <h3>Helper Functions</h3>
 <pre class="r"><code># Construct symmetric matrix from upper-triangular vector
@@ -473,27 +501,35 @@ log_likelihood &lt;- function(theta_vec, S, d) {
 <hr />
 </div>
 </div>
-<div id="initial-positive-definite-guess" class="section level1">
-<h1>Initial Positive-Definite Guess</h1>
-<pre class="r"><code>set.seed(7)
-A &lt;- matrix(rnorm(d*d), d, d)
-Theta0 &lt;- A %*% t(A) + d * diag(d)
-
-upper_idx &lt;- which(upper.tri(Theta0, diag = TRUE))
-theta0_vec &lt;- Theta0[upper_idx]</code></pre>
+<div id="section" class="section level1">
+<h1></h1>
 <hr />
 </div>
 <div id="optimization" class="section level1">
 <h1>Optimization</h1>
-<p>We minimize the negative log-likelihood.</p>
-<pre class="r"><code>optim_result &lt;- optim(
+<p>We minimize the negative loglikelihood function using the function
+<strong>optim()</strong> with the
+<strong>Broyden–Fletcher–Goldfarb–Shanno algorithm</strong> method and
+we randomly choose initial values for the first step of the
+minimization.</p>
+<pre class="r"><code>#Initial Positive-Definite Guess for the minimization
+set.seed(7)
+A &lt;- matrix(rnorm(d*d), d, d)
+Theta0 &lt;- A %*% t(A) + d * diag(d)
+
+upper_idx &lt;- which(upper.tri(Theta0, diag = TRUE))
+theta0_vec &lt;- Theta0[upper_idx]
+
+optim_result &lt;- optim(
   par = theta0_vec,
   fn = function(par) -log_likelihood(par, EstimSigma, d),
   method = &quot;BFGS&quot;
 )
 
 Theta_MLE &lt;- construct_symmetric_matrix(optim_result$par, d)
-Theta_MLE</code></pre>
+cat(&quot;Estimated Precision Matrix (Theta) using implemented LASSO log-likelihood function:\n&quot;)</code></pre>
+<pre><code>## Estimated Precision Matrix (Theta) using implemented LASSO log-likelihood function:</code></pre>
+<pre class="r"><code>print(Theta_MLE)</code></pre>
 <pre><code>##             [,1]        [,2]        [,3]        [,4]
 ## [1,] 2.936023166  1.68740575 0.000367674  0.88040058
 ## [2,] 1.687405750  3.87727182 1.938094027 -0.00137707
@@ -503,17 +539,19 @@ Theta_MLE</code></pre>
 </div>
 <div id="conclusion" class="section level1">
 <h1>Conclusion</h1>
-<ul>
-<li>We simulated a Gaussian vector respecting a graph structure<br />
-</li>
-<li>We estimated covariance and precision matrices<br />
-</li>
-<li>We computed the <strong>MLE precision matrix</strong><br />
-</li>
-<li>The MLE recovers the original sparsity pattern of the graph</li>
-</ul>
-<p>This provides a full demonstration of how Gaussian graphical models
-behave in practice.</p>
+<p>-We simulated a Gaussian vector consistent with a given graph
+structure.</p>
+<p>-The precision matrix was initially estimated by inverting the MLE
+for the covariance matrix.</p>
+<p>-We then computed the MLE of the precision matrix by maximizing the
+log-likelihood (equivalently, minimizing the negative
+log-likelihood).</p>
+<p>-Both methods yielded the same results, confirming that the MLE for
+the precision matrix coincides with the inverse of the sample covariance
+matrix.</p>
+<p>-However, neither method identified exact zeros for <span class="math inline">\(\theta_{13}\)</span> and <span class="math inline">\(\theta_{24}\)</span> . Introducing a lasso
+penalization with an appropriate regularization term could address this
+limitation.</p>
 </div>
 
 
