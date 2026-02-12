@@ -247,4 +247,4 @@ cat(
 
 For **linear Gaussian additive noise models**, the ANM approach fails to identify the true causal direction. 
 In this setting, the joint distribution $(X, Y)$ is **bivariate Gaussian**, which implies that the model is symmetric with respect to $X$ and $Y$. 
-As a consequence, the asymmetry exploited by additive noise models to infer causality disappears, and the causal direction cannot be distinguished from observational data alone.
+As a consequence, the asymmetry exploited by additive noise models to infer causality disappears.
